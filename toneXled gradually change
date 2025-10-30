@@ -1,0 +1,43 @@
+int ledPin = 7;        // LED pin
+int buzzerPin = 11;     // Buzzer pin
+int lastToneFreq = -1;  // To track last tone frequency
+
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+  pinMode(buzzerPin, OUTPUT);
+}
+
+
+void loop() {
+  // Fade in
+  for (int brightness = 5; brightness <= 255; brightness++) {
+    analogWrite(ledPin, brightness);
+    int toneFreq = map(brightness, 5, 255, 200, 2000);
+    if (toneFreq != lastToneFreq) {
+      tone(buzzerPin, toneFreq);
+      lastToneFreq = toneFreq;
+    }
+    delay(10);
+  }
+
+
+  // Fade out
+  for (int brightness = 255; brightness >= 5; brightness--) {
+    analogWrite(ledPin, brightness);
+    int toneFreq = map(brightness, 5, 255, 200, 2000);
+    if (toneFreq != lastToneFreq) {
+      tone(buzzerPin, toneFreq);
+      lastToneFreq = toneFreq;
+    }
+    delay(10);
+  }
+
+
+  // Stop tone
+  noTone(buzzerPin);
+  lastToneFreq = -1; // Reset for next cycle
+}
+
+
+
